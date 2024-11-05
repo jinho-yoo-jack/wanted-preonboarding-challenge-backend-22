@@ -64,6 +64,13 @@ classDiagram
         +getStatus(String)
     }
 ```
+1. 클라이언트 요청 → PaymentController
+2. Controller → Service로 요청 전달
+3. Service에서 Factory를 통해 적절한 Processor 생성
+4. Processor에서 실제 PG사 API 호출 및 응답 처리
+5. 결과를 역순으로 전달하여 클라이언트에게 반환
+
+
 - [x] 아키텍처 구조
 ```mermaid
   graph TB
@@ -85,6 +92,21 @@ classDiagram
   Naver --> Naver_API[네이버페이 API]
   Future --> Future_API[Future PG API]
 ```
+1. Client → API Gateway
+    - API 키 검증
+    - 요청 유효성 검사
+
+2. API Gateway → Application Server
+    - 결제 요청 처리 
+    - DB 트랜잭션 시작
+
+3. Application Server → PG사
+    - PG사 API 호출
+    - 응답 대기 및 처리
+
+4. 결과 처리
+    - DB 저장 
+
 - [x] ERD
 ```mermaid
 erDiagram
@@ -138,6 +160,27 @@ erDiagram
     PAYMENT }|--|| PG_PROVIDER : uses
 
 ```
+- MERCHANT: 가맹점 정보 관리
+- PAYMENT: 결제 기본 정보 관리
+- PAYMENT_DETAIL: 결제 상세 처리 정보 관리
+- PG_PROVIDER: PG사 정보 관리
+
+1. 결제 요청
+- 가맹점 인증 확인
+- 주문번호 생성 및 중복 체크
+- 결제 기본 정보 저장 (주문금액, 상태 등)
+- PG사 정보 확인 및 연동
+
+2. 결제 진행
+- 결제 상태 단계별 업데이트
+- 결제 상세 정보 기록
+- PG사 트랜잭션 ID 관리
+- 요청/응답 데이터 저장
+
+3. 결제 완료
+- 최종 결제 상태 업데이트
+- 결제 완료 상세 정보 저장
+- 가맹점별 정산 정보 집계
 
 ### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
 - https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues
