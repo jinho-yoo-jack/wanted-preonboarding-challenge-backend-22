@@ -29,9 +29,115 @@
    - 각각의 PG사에서 응답해주는 **메시지의 형식**을 어떻게 형식을 공통화하고 어떤 **구조**로 변환 할 것인가?
 ### 과제 내용
 요구사항을 만족하는 설계 도면을 그려 주세요.
-- [ ] 클래스 다이어그램
-- [ ] 아키텍처 구조
-- [ ] ERD
+- [x] 클래스 다이어그램
+```mermaid
+classDiagram
+    PaymentController --> PaymentService
+    PaymentService --> PaymentProcessor
+    PaymentProcessor <|.. KGPaymentProcessor
+    PaymentProcessor <|.. NaverPaymentProcessor
+
+    class PaymentController{
+        +processPayment(PaymentRequestDTO)
+        +getPaymentStatus(String)
+    }
+
+    class PaymentService{
+        -paymentFactory
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class PaymentProcessor{
+        <<interface>>
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class KGPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class NaverPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+```
+- [x] 아키텍처 구조
+```mermaid
+  graph TB
+  Client[Client Application] --> API[API Gateway]
+  API --> APP[Application Server]
+
+  subgraph Payment Service
+  APP[Application Server]
+  APP --> DB[(Database)]
+  end
+
+  subgraph Payment Processors
+  APP --> KG[KG이니시스 Adapter]
+  APP --> Naver[네이버페이 Adapter]
+  APP --> Future[Future PG Adapter...]
+  end
+
+  KG --> KG_API[KG이니시스 API]
+  Naver --> Naver_API[네이버페이 API]
+  Future --> Future_API[Future PG API]
+```
+- [x] ERD
+```mermaid
+erDiagram
+    MERCHANT ||--o{ PAYMENT : has
+    MERCHANT {
+        bigint merchant_id PK
+        varchar merchant_name
+        varchar business_number
+        varchar api_key
+        varchar callback_url
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT ||--|| PAYMENT_DETAIL : has
+    PAYMENT {
+        bigint payment_id PK
+        bigint merchant_id FK
+        varchar order_id
+        decimal amount
+        varchar currency
+        varchar status
+        timestamp payment_datetime
+        varchar payment_method
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT_DETAIL {
+        bigint payment_detail_id PK
+        bigint payment_id FK
+        varchar pg_provider
+        varchar pg_transaction_id
+        text request_payload
+        text response_payload
+        varchar error_code
+        text error_message
+        timestamp created_at
+    }
+    
+    PG_PROVIDER {
+        bigint provider_id PK
+        varchar provider_name
+        varchar api_endpoint
+        varchar api_key
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT }|--|| PG_PROVIDER : uses
+
+```
 
 ### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
 - https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues
