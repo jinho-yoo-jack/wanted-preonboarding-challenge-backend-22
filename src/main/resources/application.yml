@@ -7,6 +7,9 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
+  profiles:
+    active: dev
+
 ---
 spring:
   config:
