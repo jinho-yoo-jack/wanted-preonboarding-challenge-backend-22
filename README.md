@@ -29,7 +29,8 @@
 ### 과제 내용
 요구사항을 만족하는 설계 도면을 그려 주세요.
 - [ ] 클래스 다이어그램
-- [ ] 아키텍처 구조
+- [x] 아키텍처 구조
+<img src="./src/main/resources/static/img/architecture.png" alt="arch"/>
 - [ ] ERD
 
 ## 필수 과제2 - 구현
