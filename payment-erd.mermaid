@@ -1,0 +1,49 @@
+erDiagram
+    MERCHANT ||--o{ PAYMENT : has
+    MERCHANT {
+        bigint merchant_id PK
+        varchar merchant_name
+        varchar business_number
+        varchar api_key
+        varchar callback_url
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT ||--|| PAYMENT_DETAIL : has
+    PAYMENT {
+        bigint payment_id PK
+        bigint merchant_id FK
+        varchar order_id
+        decimal amount
+        varchar currency
+        varchar status
+        timestamp payment_datetime
+        varchar payment_method
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT_DETAIL {
+        bigint payment_detail_id PK
+        bigint payment_id FK
+        varchar pg_provider
+        varchar pg_transaction_id
+        text request_payload
+        text response_payload
+        varchar error_code
+        text error_message
+        timestamp created_at
+    }
+    
+    PG_PROVIDER {
+        bigint provider_id PK
+        varchar provider_name
+        varchar api_endpoint
+        varchar api_key
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT }|--|| PG_PROVIDER : uses

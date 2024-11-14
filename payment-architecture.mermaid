@@ -1,0 +1,20 @@
+graph TB
+    Client[Client Application] --> API[API Gateway]
+    API --> APP[Application Server]
+    
+    subgraph Payment Service
+        APP[Application Server]
+        APP --> DB[(Database)]
+    end
+    
+    subgraph Payment Processors
+        APP --> KG[KG이니시스 Adapter]
+        APP --> Naver[네이버페이 Adapter]
+        APP --> Future[Future PG Adapter...]
+    end
+    
+    KG --> KG_API[KG이니시스 API]
+    Naver --> Naver_API[네이버페이 API]
+    Future --> Future_API[Future PG API]
+    
+

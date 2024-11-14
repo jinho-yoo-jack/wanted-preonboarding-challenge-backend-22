@@ -29,9 +29,158 @@
    - 각각의 PG사에서 응답해주는 **메시지의 형식**을 어떻게 형식을 공통화하고 어떤 **구조**로 변환 할 것인가?
 ### 과제 내용
 요구사항을 만족하는 설계 도면을 그려 주세요.
-- [ ] 클래스 다이어그램
-- [ ] 아키텍처 구조
-- [ ] ERD
+- [x] 클래스 다이어그램
+```mermaid
+classDiagram
+    PaymentController --> PaymentService
+    PaymentService --> PaymentProcessor
+    PaymentProcessor <|.. KGPaymentProcessor
+    PaymentProcessor <|.. NaverPaymentProcessor
+
+    class PaymentController{
+        +processPayment(PaymentRequestDTO)
+        +getPaymentStatus(String)
+    }
+
+    class PaymentService{
+        -paymentFactory
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class PaymentProcessor{
+        <<interface>>
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class KGPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class NaverPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+```
+1. 클라이언트 요청 → PaymentController
+2. Controller → Service로 요청 전달
+3. Service에서 Factory를 통해 적절한 Processor 생성
+4. Processor에서 실제 PG사 API 호출 및 응답 처리
+5. 결과를 역순으로 전달하여 클라이언트에게 반환
+
+
+- [x] 아키텍처 구조
+```mermaid
+  graph TB
+  Client[Client Application] --> API[API Gateway]
+  API --> APP[Application Server]
+
+  subgraph Payment Service
+  APP[Application Server]
+  APP --> DB[(Database)]
+  end
+
+  subgraph Payment Processors
+  APP --> KG[KG이니시스 Adapter]
+  APP --> Naver[네이버페이 Adapter]
+  APP --> Future[Future PG Adapter...]
+  end
+
+  KG --> KG_API[KG이니시스 API]
+  Naver --> Naver_API[네이버페이 API]
+  Future --> Future_API[Future PG API]
+```
+1. Client → API Gateway
+    - API 키 검증
+    - 요청 유효성 검사
+
+2. API Gateway → Application Server
+    - 결제 요청 처리 
+    - DB 트랜잭션 시작
+
+3. Application Server → PG사
+    - PG사 API 호출
+    - 응답 대기 및 처리
+
+4. 결과 처리
+    - DB 저장 
+
+- [x] ERD
+```mermaid
+erDiagram
+    MERCHANT ||--o{ PAYMENT : has
+    MERCHANT {
+        bigint merchant_id PK
+        varchar merchant_name
+        varchar business_number
+        varchar api_key
+        varchar callback_url
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT ||--|| PAYMENT_DETAIL : has
+    PAYMENT {
+        bigint payment_id PK
+        bigint merchant_id FK
+        varchar order_id
+        decimal amount
+        varchar currency
+        varchar status
+        timestamp payment_datetime
+        varchar payment_method
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT_DETAIL {
+        bigint payment_detail_id PK
+        bigint payment_id FK
+        varchar pg_provider
+        varchar pg_transaction_id
+        text request_payload
+        text response_payload
+        varchar error_code
+        text error_message
+        timestamp created_at
+    }
+    
+    PG_PROVIDER {
+        bigint provider_id PK
+        varchar provider_name
+        varchar api_endpoint
+        varchar api_key
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PAYMENT }|--|| PG_PROVIDER : uses
+
+```
+- MERCHANT: 가맹점 정보 관리
+- PAYMENT: 결제 기본 정보 관리
+- PAYMENT_DETAIL: 결제 상세 처리 정보 관리
+- PG_PROVIDER: PG사 정보 관리
+
+1. 결제 요청
+- 가맹점 인증 확인
+- 주문번호 생성 및 중복 체크
+- 결제 기본 정보 저장 (주문금액, 상태 등)
+- PG사 정보 확인 및 연동
+
+2. 결제 진행
+- 결제 상태 단계별 업데이트
+- 결제 상세 정보 기록
+- PG사 트랜잭션 ID 관리
+- 요청/응답 데이터 저장
+
+3. 결제 완료
+- 최종 결제 상태 업데이트
+- 결제 완료 상세 정보 저장
+- 가맹점별 정산 정보 집계
 
 ### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
 - https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues

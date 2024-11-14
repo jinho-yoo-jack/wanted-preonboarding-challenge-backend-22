@@ -1,0 +1,32 @@
+classDiagram
+    PaymentController --> PaymentService
+    PaymentService --> PaymentProcessor
+    PaymentProcessor <|.. KGPaymentProcessor
+    PaymentProcessor <|.. NaverPaymentProcessor
+
+    class PaymentController{
+        +processPayment(PaymentRequestDTO)
+        +getPaymentStatus(String)
+    }
+
+    class PaymentService{
+        -paymentFactory
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class PaymentProcessor{
+        <<interface>>
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class KGPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
+
+    class NaverPaymentProcessor{
+        +process(PaymentRequestDTO)
+        +getStatus(String)
+    }
