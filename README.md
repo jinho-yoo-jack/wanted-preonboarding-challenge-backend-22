@@ -1,7 +1,11 @@
 # wanted-preonboarding-challenge-backend-25
 원티드 프리온보딩 백엔드 챌린지 사전과제
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.css" rel="stylesheet">
+# DDD, 헥사고날 아키텍처 개념 메모
+
+- 헥사고날 == 포트 & 어댑터
+>- 포트 : 시스템 내, 외부의 경계 지정
+>- 어댑터 : 포트를 구현하여 실제 상호작용할 클래스
 
 ## 프로젝트 필수 패키지 및 버전 정보
 ### 버전 정보
@@ -10,11 +14,6 @@
     - Intellij에서 JDK 버전 변경하는 방법(참고 URL: https://inpa.tistory.com/entry/IntelliJ-%F0%9F%92%BD-%EC%9E%90%EB%B0%94-JDK-%EB%B2%84%EC%A0%84-%EB%B3%80%EA%B2%BD-%EB%B0%A9%EB%B2%95)
 ### 필수 설치 패키지
 - Docker Desktop
-
-# 과제 설명
-- 시간이 없는 수강생들은 과제1과 과제2 중 하나를 선택해서 진행하셔도 무방합니다.
-- 코드를 작성할 시간이 없다면, 과제1를 선택하고 설계 도면만 그려 주세요!
-- 과제3은 선택사항입니다.
 
 ## 필수 과제1 - 설계 
 고객의 요구사항: 다수의 PG사 결제 서비스를 하나의 APIs로 통합해서 서비스를 이용할 수 있는 서비스를 만들어 주세요.
@@ -27,20 +26,18 @@
 2. PG사 마다 요청 메시지와 응답 메시지의 형식이 다른데, 어떻게(How?)하면 깨끗하게 공통화 시킬 수 있을까?
    - RequestDTO를 어떤 구조로 각각의 PG사에 맞게 효율적으로 변환 할 것인가?
    - 각각의 PG사에서 응답해주는 **메시지의 형식**을 어떻게 형식을 공통화하고 어떤 **구조**로 변환 할 것인가?
-### 과제 내용
-요구사항을 만족하는 설계 도면을 그려 주세요.
-- [ ] 클래스 다이어그램
-- [ ] 아키텍처 구조
-- [ ] ERD
+### 과제 1 - 1차 완성본
+- [x] 클래스 다이어그램
+<img src="./src/main/resources/static/img/diagram.png" alt="arch"/>
+- [x] 아키텍처 구조
+<img src="./src/main/resources/static/img/architecture.png" alt="arch"/>
+- [x] ERD
+<img src="./src/main/resources/static/img/erd.png" alt="arch"/>
 
-### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
-- https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues
-- 참고 URL: https://devlog-wjdrbs96.tistory.com/227
-
-## 필수 과제2 - 구현
+## 과제 2
 과제1에서 완성한 설계 도면을 토대로 요구사항을 만족하는 서비스를 구현해보자.
-- [ ] 자신의 PC에 프로젝트 Clone
-- [ ] 설계 도면에 맞게 프로젝트 구조 생성
+- [x] 자신의 PC에 프로젝트 Clone
+- [x] 설계 도면에 맞게 프로젝트 구조 생성
 - [ ] 설계 도면에 맞게 src/main/resources/initdb/create_schema.sql 테이블 정의 및 수정
 - [ ] PG사 API 구현
   - 결제 요청 API 

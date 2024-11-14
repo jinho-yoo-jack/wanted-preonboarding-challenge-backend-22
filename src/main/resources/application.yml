@@ -7,11 +7,16 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
+  profiles:
+    active: dev
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
+  # docker exec -it preonboarding-mysql-1 mysql -u wanted -p ...(backend)
   datasource:
     url: jdbc:mysql://localhost:13306/wanted_preonboarding?serverTimezone=UTC&characterEncoding=UTF-8
     username: wanted
