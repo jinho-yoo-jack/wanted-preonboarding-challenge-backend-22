@@ -26,18 +26,18 @@
 2. PG사 마다 요청 메시지와 응답 메시지의 형식이 다른데, 어떻게(How?)하면 깨끗하게 공통화 시킬 수 있을까?
    - RequestDTO를 어떤 구조로 각각의 PG사에 맞게 효율적으로 변환 할 것인가?
    - 각각의 PG사에서 응답해주는 **메시지의 형식**을 어떻게 형식을 공통화하고 어떤 **구조**로 변환 할 것인가?
-### 과제 내용
-요구사항을 만족하는 설계 도면을 그려 주세요.
+### 과제 1 - 1차 완성본
 - [x] 클래스 다이어그램
 <img src="./src/main/resources/static/img/diagram.png" alt="arch"/>
 - [x] 아키텍처 구조
 <img src="./src/main/resources/static/img/architecture.png" alt="arch"/>
-- [ ] ERD
+- [x] ERD
+<img src="./src/main/resources/static/img/erd.png" alt="arch"/>
 
-## 필수 과제2 - 구현
+## 과제 2
 과제1에서 완성한 설계 도면을 토대로 요구사항을 만족하는 서비스를 구현해보자.
-- [ ] 자신의 PC에 프로젝트 Clone
-- [ ] 설계 도면에 맞게 프로젝트 구조 생성
+- [x] 자신의 PC에 프로젝트 Clone
+- [x] 설계 도면에 맞게 프로젝트 구조 생성
 - [ ] 설계 도면에 맞게 src/main/resources/initdb/create_schema.sql 테이블 정의 및 수정
 - [ ] PG사 API 구현
   - 결제 요청 API 
