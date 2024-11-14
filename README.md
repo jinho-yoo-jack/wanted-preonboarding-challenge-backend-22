@@ -28,7 +28,8 @@
    - 각각의 PG사에서 응답해주는 **메시지의 형식**을 어떻게 형식을 공통화하고 어떤 **구조**로 변환 할 것인가?
 ### 과제 내용
 요구사항을 만족하는 설계 도면을 그려 주세요.
-- [ ] 클래스 다이어그램
+- [x] 클래스 다이어그램
+<img src="./src/main/resources/static/img/diagram.png" alt="arch"/>
 - [x] 아키텍처 구조
 <img src="./src/main/resources/static/img/architecture.png" alt="arch"/>
 - [ ] ERD
