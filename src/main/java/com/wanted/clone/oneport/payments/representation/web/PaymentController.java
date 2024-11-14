@@ -14,11 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PaymentController {
     private final PaymentRequestUseCase paymentRequestUseCase;
 
-    @GetMapping
-    public String payment(Model model) {
-        return "toss/checkout";
-    }
-
     @GetMapping("/request")
     public String paymentRequest(PaymentRequestMessage message, Model model) {
         model.addAttribute("userId", "jinho-yoo");
